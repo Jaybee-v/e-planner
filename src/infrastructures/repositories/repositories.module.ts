@@ -12,11 +12,20 @@ import { Stable } from '../entities/stable.entity';
 import { StableRepositoryOrm } from './stable.repository';
 import Newsletter from '../entities/newsletter.entity';
 import { NewsletterRepositoryOrm } from './newsletter.repository';
+import { Instructor } from '../entities/instructor.entity';
+import { InstructorRepositoryOrm } from './instructor.repository';
 
 @Module({
   imports: [
     TypeormConfigModule,
-    TypeOrmModule.forFeature([User, Rider, StableStore, Stable, Newsletter]),
+    TypeOrmModule.forFeature([
+      User,
+      Rider,
+      StableStore,
+      Stable,
+      Newsletter,
+      Instructor,
+    ]),
   ],
   providers: [
     UserRepositoryOrm,
@@ -24,6 +33,7 @@ import { NewsletterRepositoryOrm } from './newsletter.repository';
     StableStoreRepositoryOrm,
     StableRepositoryOrm,
     NewsletterRepositoryOrm,
+    InstructorRepositoryOrm,
     AuthService,
   ],
   exports: [
@@ -32,6 +42,7 @@ import { NewsletterRepositoryOrm } from './newsletter.repository';
     StableStoreRepositoryOrm,
     StableRepositoryOrm,
     NewsletterRepositoryOrm,
+    InstructorRepositoryOrm,
     AuthService,
   ],
 })
