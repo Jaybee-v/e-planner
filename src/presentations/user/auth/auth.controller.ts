@@ -61,10 +61,12 @@ export class AuthController {
     }
   }
 
-  @Get('newsletter/subscribe/:email')
-  async subscribeNewsletter(@Param('email') email: string) {
+  @Post('newsletter/subscribe')
+  async subscribeNewsletter(@Body() data: { email: string }) {
     try {
-      const result = await this.newsletterService.create(email);
+      console.log(data.email);
+
+      const result = await this.newsletterService.create(data.email);
       return {
         status: 'success',
         code: 200,

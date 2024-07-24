@@ -13,4 +13,7 @@ export class StableStore {
 
   @Column('varchar', { length: 5 })
   zipcode: string;
+
+  @Column('boolean', { default: false })
+  isUsed: boolean;
 }

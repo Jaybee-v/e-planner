@@ -19,7 +19,7 @@ export class RiderController {
   @Post('')
   async create(@Body() createRiderDto: CreateRiderDto, @Request() req: any) {
     try {
-      if (req.user.sub !== createRiderDto.id) {
+      if (req.user.role !== 'user') {
         return {
           status: 'error',
           code: 401,

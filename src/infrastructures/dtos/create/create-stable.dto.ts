@@ -1,6 +1,10 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateStableDto {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
   @IsString()
   @IsNotEmpty({ message: 'Name is required' })
   name: string;
@@ -24,4 +28,8 @@ export class CreateStableDto {
   @IsString()
   @IsNotEmpty({ message: 'Phone is required' })
   phone: string;
+
+  @IsNumber()
+  @IsOptional()
+  stableStoreId: number;
 }

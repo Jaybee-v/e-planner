@@ -5,16 +5,21 @@ import { CreateStableDto } from '../dtos/create/create-stable.dto';
 import { StableM } from 'src/domains/models/Stable';
 import { StableRepository } from 'src/domains/repositories/stable.repository';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { StableStoreRepositoryOrm } from './stable-store.repository';
 
 export class StableRepositoryOrm implements StableRepository {
   constructor(
     @InjectRepository(Stable)
     private readonly stableRepository: Repository<Stable>,
+    private readonly stableStoreService: StableStoreRepositoryOrm,
   ) {}
 
   async create(createStableDto: CreateStableDto): Promise<StableM> {
     const stableEntity = await this.toStableEntity(createStableDto);
     const createdStable = await this.stableRepository.save(stableEntity);
+    if (createStableDto.stableStoreId) {
+      await this.stableStoreService.updateIsUsed(createStableDto.stableStoreId);
+    }
     return this.toStableModel(createdStable);
   }
 
@@ -40,6 +45,7 @@ export class StableRepositoryOrm implements StableRepository {
   private toStableEntity(createStableDto: CreateStableDto): Stable {
     const stableEntity = new Stable();
 
+    stableEntity.id = createStableDto.id;
     stableEntity.name = createStableDto.name;
     stableEntity.address = createStableDto.address;
     stableEntity.city = createStableDto.city;
