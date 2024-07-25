@@ -14,6 +14,8 @@ import Newsletter from '../entities/newsletter.entity';
 import { NewsletterRepositoryOrm } from './newsletter.repository';
 import { Instructor } from '../entities/instructor.entity';
 import { InstructorRepositoryOrm } from './instructor.repository';
+import { Lesson } from '../entities/lesson.entity';
+import { LessonRepositoryOrm } from './lesson.repository';
 
 @Module({
   imports: [
@@ -25,6 +27,7 @@ import { InstructorRepositoryOrm } from './instructor.repository';
       Stable,
       Newsletter,
       Instructor,
+      Lesson,
     ]),
   ],
   providers: [
@@ -34,6 +37,7 @@ import { InstructorRepositoryOrm } from './instructor.repository';
     StableRepositoryOrm,
     NewsletterRepositoryOrm,
     InstructorRepositoryOrm,
+    LessonRepositoryOrm,
     AuthService,
   ],
   exports: [
@@ -43,6 +47,7 @@ import { InstructorRepositoryOrm } from './instructor.repository';
     StableRepositoryOrm,
     NewsletterRepositoryOrm,
     InstructorRepositoryOrm,
+    LessonRepositoryOrm,
     AuthService,
   ],
 })

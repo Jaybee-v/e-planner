@@ -5,12 +5,15 @@ export class Rider {
   @Column('uuid', { primary: true })
   id: string;
 
+  @Index()
   @Column('varchar')
   name: string;
 
+  @Index()
   @Column('varchar')
   lastname: string;
 
+  @Index()
   @Column('int')
   level: number;
 
@@ -20,6 +23,7 @@ export class Rider {
   @Column('varchar')
   address: string;
 
+  @Index()
   @Column('varchar')
   zipcode: string;
 

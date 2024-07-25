@@ -6,6 +6,7 @@ export class Stable {
   @Column('uuid', { primary: true })
   id: string;
 
+  @Index()
   @Column('varchar', { length: 255 })
   name: string;
 
@@ -15,6 +16,7 @@ export class Stable {
   @Column('varchar', { length: 255 })
   city: string;
 
+  @Index()
   @Column('varchar', { length: 5 })
   zipcode: string;
 

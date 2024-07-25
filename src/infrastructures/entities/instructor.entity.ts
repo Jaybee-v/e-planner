@@ -6,6 +6,7 @@ export class Instructor {
   @PrimaryColumn('varchar', { unique: true })
   id: string;
 
+  @Index()
   @Column('varchar', { length: 100 })
   name: string;
 
@@ -18,6 +19,7 @@ export class Instructor {
   @Column('varchar', { length: 10 })
   phone: string;
 
+  @Index()
   @Column('varchar', { length: 100 })
   stableId: string;
 
