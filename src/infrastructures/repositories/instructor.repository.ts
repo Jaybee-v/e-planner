@@ -12,6 +12,7 @@ interface NewInstructor {
   id: string;
   name: string;
   lastname: string;
+  color: string;
   phone: string;
   birthdate: string;
   email: string;
@@ -31,6 +32,8 @@ export class InstructorRepositoryOrm implements InstructorRepository {
         createInstructorDto.email.split('@')[0] +
         'e-p-' +
         Math.floor(Math.random() * 1000).toString();
+      console.log(password);
+
       const userEntity = await this.userService.create({
         email: createInstructorDto.email,
         password,
@@ -134,6 +137,7 @@ export class InstructorRepositoryOrm implements InstructorRepository {
     instructorEntity.lastname = createInstructorDto.lastname;
     instructorEntity.phone = createInstructorDto.phone;
     instructorEntity.birthdate = new Date(createInstructorDto.birthdate);
+    instructorEntity.color = createInstructorDto.color || 'default';
     instructorEntity.stableId = createInstructorDto.stableId;
 
     return instructorEntity;
@@ -147,6 +151,7 @@ export class InstructorRepositoryOrm implements InstructorRepository {
     model.lastname = instructorEntity.lastname;
     model.phone = instructorEntity.phone;
     model.stableId = instructorEntity.stableId;
+    model.color = instructorEntity.color;
     model.birthdate = instructorEntity.birthdate;
     model.createdAt = instructorEntity.createdAt;
     model.updatedAt = instructorEntity.updatedAt;

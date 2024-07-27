@@ -68,6 +68,7 @@ export class UserRepositoryOrm implements UserRepository {
 
     userEntity.email = createUserDto.email;
     userEntity.password = await hashPassword(createUserDto.password);
+    userEntity.role = createUserDto.role;
 
     return userEntity;
   }

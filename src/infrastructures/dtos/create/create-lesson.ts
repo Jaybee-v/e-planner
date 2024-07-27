@@ -7,10 +7,6 @@ export class CreateLessonDto {
 
   @IsString()
   @IsNotEmpty()
-  title: string;
-
-  @IsString()
-  @IsNotEmpty()
   type: string;
 
   @IsString()

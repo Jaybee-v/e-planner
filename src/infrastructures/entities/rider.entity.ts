@@ -5,7 +5,7 @@ export class Rider {
   @Column('uuid', { primary: true })
   id: string;
 
-  @Index()
+  @Index('rider_name_idx')
   @Column('varchar')
   name: string;
 
@@ -13,7 +13,7 @@ export class Rider {
   @Column('varchar')
   lastname: string;
 
-  @Index()
+  @Index('rider_level_idx')
   @Column('int')
   level: number;
 
@@ -23,7 +23,7 @@ export class Rider {
   @Column('varchar')
   address: string;
 
-  @Index()
+  @Index('rider_zipcode_idx')
   @Column('varchar')
   zipcode: string;
 

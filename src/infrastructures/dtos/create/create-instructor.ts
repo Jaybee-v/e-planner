@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateInstructorDto {
   @IsString()
@@ -16,6 +16,10 @@ export class CreateInstructorDto {
   @IsString()
   @IsNotEmpty()
   birthdate: string;
+
+  @IsString()
+  @IsOptional()
+  color: string;
 
   @IsString()
   @IsNotEmpty({ message: 'Phone is required' })

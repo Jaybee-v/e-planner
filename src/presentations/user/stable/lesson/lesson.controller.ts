@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
@@ -51,10 +52,15 @@ export class LessonController {
     }
   }
 
-  @Get('stable/:id')
-  async findByStableId(@Param('id') id: string) {
+  @Post('stable-by-date')
+  async findByStableId(@Body() body: any) {
     try {
-      const result = await this.lessonService.findByHostId(id);
+      console.log(body);
+
+      const result = await this.lessonService.findByHostIdForTable(
+        body.id,
+        body.date,
+      );
       return {
         status: 'success',
         code: 200,

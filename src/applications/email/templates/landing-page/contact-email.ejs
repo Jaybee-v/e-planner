@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background-color: #082f49;
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 26px;
+        letter-spacing: 1px;
+      }
+      .content {
+        padding: 20px;
+        color: #333333;
+      }
+      .content h2 {
+        font-size: 22px;
+        color: #082f49;
+        margin-bottom: 10px;
+      }
+      .content p {
+        line-height: 1.6;
+        margin-bottom: 15px;
+      }
+      .footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 12px;
+        color: #777777;
+        background-color: #f9f9f9;
+        border-top: 1px solid #eaeaea;
+      }
+      .footer p {
+        margin: 0;
+      }
+      .footer a {
+        color: #082f49;
+        text-decoration: none;
+      }
+      @media (max-width: 600px) {
+        .container {
+          width: 100%;
+        }
+        .header,
+        .content,
+        .footer {
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Nouveau message de contact</h1>
+      </div>
+      <div class="content">
+        <h2>Bonjour Equita-planner,</h2>
+        <p>
+          Vous avez reçu un nouveau message de contact via votre site web. Voici
+          les détails :
+        </p>
+        <p><strong>Prénom :</strong> <%= firstName %></p>
+        <p><strong>Email :</strong> <%= email %></p>
+        <p><strong>Objet :</strong> <%= subject %></p>
+        <p><strong>Message :</strong></p>
+        <p><%= message %></p>
+        <p>
+          Veuillez répondre à cet email dès que possible pour assister
+          l'utilisateur.
+        </p>
+        <p>Cordialement,<br />Le système Equita-planner</p>
+      </div>
+    </div>
+  </body>
+</html>

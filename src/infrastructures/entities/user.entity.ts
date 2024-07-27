@@ -6,7 +6,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string = uuid();
 
-  @Index()
+  @Index('user_email_idx')
   @Column('varchar', { unique: true })
   email: string;
 

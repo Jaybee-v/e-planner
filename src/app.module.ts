@@ -4,6 +4,7 @@ import { EnvConfigModule } from './infrastructures/config/env-config/env-config.
 import { UserModule } from './presentations/user/user.module';
 import { AuthModule } from './presentations/user/auth/auth.module';
 import { StableModule } from './presentations/user/stable/stable.module';
+import { EmailModule } from './applications/email/email.module';
 @Module({
   imports: [
     EnvConfigModule,
@@ -16,6 +17,7 @@ import { StableModule } from './presentations/user/stable/stable.module';
     UserModule,
     AuthModule,
     StableModule,
+    EmailModule,
     // CacheModule.register(),
   ],
 })

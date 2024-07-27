@@ -6,7 +6,7 @@ export class Instructor {
   @PrimaryColumn('varchar', { unique: true })
   id: string;
 
-  @Index()
+  @Index('instructor_name_idx')
   @Column('varchar', { length: 100 })
   name: string;
 
@@ -19,9 +19,12 @@ export class Instructor {
   @Column('varchar', { length: 10 })
   phone: string;
 
-  @Index()
+  @Index('instructor_stable_idx')
   @Column('varchar', { length: 100 })
   stableId: string;
+
+  @Column('varchar', { length: 100 })
+  color: string;
 
   @Column({ default: () => 'NOW()' })
   createdAt: Date;

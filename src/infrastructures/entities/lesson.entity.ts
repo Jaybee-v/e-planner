@@ -5,12 +5,9 @@ export class Lesson {
   @PrimaryGeneratedColumn('uuid')
   id: string = uuid();
 
-  @Index()
+  @Index('lesson_stable_idx')
   @Column('varchar')
   hostId: string;
-
-  @Column('varchar')
-  title: string;
 
   @Column('varchar')
   type: string;

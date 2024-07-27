@@ -4,6 +4,7 @@ export class InstructorM {
   lastname: string;
   birthdate: Date;
   phone: string;
+  color: string;
   stableId: string;
   createdAt: Date;
   updatedAt: Date;

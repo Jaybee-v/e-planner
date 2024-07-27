@@ -10,6 +10,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
   app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
+  app.setViewEngine('ejs');
   const port = process.env.PORT || 3000;
   await app.listen(port);
 

@@ -2,11 +2,11 @@ import { Column, Entity, Index } from 'typeorm';
 
 @Entity('stables')
 export class Stable {
-  @Index()
+  @Index('stable_id_idx')
   @Column('uuid', { primary: true })
   id: string;
 
-  @Index()
+  @Index('stable_name_idx')
   @Column('varchar', { length: 255 })
   name: string;
 
