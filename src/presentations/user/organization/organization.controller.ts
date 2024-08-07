@@ -1,0 +1,65 @@
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { CreateOrganizationDto } from 'src/infrastructures/dtos/create/create-organization.dto';
+import { OrganizationRepositoryOrm } from 'src/infrastructures/repositories/organization.repository';
+import { AuthGuard } from '../auth/auth.guard';
+
+@Controller('organizations')
+export class OrganizationController {
+  constructor(
+    private readonly organizationService: OrganizationRepositoryOrm,
+  ) {}
+
+  @UseGuards(AuthGuard)
+  @Post('')
+  async create(
+    @Body() createOrganizationDto: CreateOrganizationDto,
+    @Req() req: any,
+  ) {
+    try {
+      const result = await this.organizationService.create(
+        createOrganizationDto,
+        req,
+      );
+      return {
+        status: 'success',
+        message: 'Votre inscription a bien été enregsitrée.',
+        data: result,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        status: 'error',
+        code: error.code,
+        message: error.response ? error.response.error : error.message,
+      };
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('by-rider/:riderId')
+  async findByRiderId(@Param('riderId') riderId: string) {
+    try {
+      const result = await this.organizationService.findByRiderId(riderId);
+      return {
+        status: 'success',
+        message: 'Organizations found',
+        data: result,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        status: 'error',
+        code: error.code,
+        message: error.response ? error.response.error : error.message,
+      };
+    }
+  }
+}

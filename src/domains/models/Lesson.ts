@@ -1,4 +1,5 @@
 import { InstructorM } from './Instructor';
+import { RiderM } from './Rider';
 
 export class LessonM {
   id: string;
@@ -9,7 +10,6 @@ export class LessonM {
   date: Date;
   instructorId: string;
   maxParticipants: number;
-  participants: number;
   startTime: string;
   endTime: string;
   levelRequired: number;
@@ -26,11 +26,11 @@ export class LessonTableM {
   date: Date;
   instructorId: string;
   maxParticipants: number;
-  participants: number;
   startTime: string;
   endTime: string;
   levelRequired: number;
   createdAt: Date;
   updatedAt: Date;
   instructor: InstructorM;
+  participantsIdentity: RiderM[];
 }

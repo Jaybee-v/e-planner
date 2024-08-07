@@ -50,7 +50,7 @@ export class RiderController {
     try {
       console.log(req.user);
 
-      const result = await this.riderService.findById(id, req);
+      const result = await this.riderService.findByIdHimself(id, req);
       return {
         status: 'success',
         code: 200,

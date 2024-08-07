@@ -16,6 +16,10 @@ import { Instructor } from '../entities/instructor.entity';
 import { InstructorRepositoryOrm } from './instructor.repository';
 import { Lesson } from '../entities/lesson.entity';
 import { LessonRepositoryOrm } from './lesson.repository';
+import { LessonSubscription } from '../entities/lesson-subscription.entity';
+import { LessonSubscriptionRepositoryOrm } from './lesson-subscription.repository';
+import { Organization } from '../entities/organization.entity';
+import { OrganizationRepositoryOrm } from './organization.repository';
 
 @Module({
   imports: [
@@ -28,6 +32,8 @@ import { LessonRepositoryOrm } from './lesson.repository';
       Newsletter,
       Instructor,
       Lesson,
+      LessonSubscription,
+      Organization,
     ]),
   ],
   providers: [
@@ -38,6 +44,8 @@ import { LessonRepositoryOrm } from './lesson.repository';
     NewsletterRepositoryOrm,
     InstructorRepositoryOrm,
     LessonRepositoryOrm,
+    LessonSubscriptionRepositoryOrm,
+    OrganizationRepositoryOrm,
     AuthService,
   ],
   exports: [
@@ -48,6 +56,8 @@ import { LessonRepositoryOrm } from './lesson.repository';
     NewsletterRepositoryOrm,
     InstructorRepositoryOrm,
     LessonRepositoryOrm,
+    LessonSubscriptionRepositoryOrm,
+    OrganizationRepositoryOrm,
     AuthService,
   ],
 })

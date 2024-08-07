@@ -24,9 +24,7 @@ export class Lesson {
   @Column('int')
   maxParticipants: number;
 
-  @Column('int', { default: 0 })
-  participants: number;
-
+  @Index()
   @Column('varchar')
   startTime: string;
 

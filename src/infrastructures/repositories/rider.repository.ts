@@ -5,11 +5,15 @@ import { Repository } from 'typeorm';
 import { CreateRiderDto } from '../dtos/create/create-rider.dto';
 import { RiderM } from 'src/domains/models/Rider';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { LessonSubscriptionRepositoryOrm } from './lesson-subscription.repository';
+import { OrganizationRepositoryOrm } from './organization.repository';
 
 export class RiderRepositoryOrm implements RiderRepository {
   constructor(
     @InjectRepository(Rider)
     private readonly riderRepository: Repository<Rider>,
+    private readonly lessonSubscriptionService: LessonSubscriptionRepositoryOrm,
+    private readonly organizationService: OrganizationRepositoryOrm,
   ) {}
 
   async create(createRiderDto: CreateRiderDto): Promise<RiderM> {
@@ -18,7 +22,17 @@ export class RiderRepositoryOrm implements RiderRepository {
     return this.toRiderModel(createdRider);
   }
 
-  async findById(id: string, req: any): Promise<RiderM> {
+  async findById(id: string): Promise<RiderM | null> {
+    const rider = await this.riderRepository.findOne({ where: { id } });
+
+    if (!rider) {
+      return null;
+    }
+
+    return this.toRiderModel(rider);
+  }
+
+  async findByIdHimself(id: string, req: any): Promise<RiderM> {
     const rider = await this.riderRepository.findOne({ where: { id } });
 
     if (!rider) {

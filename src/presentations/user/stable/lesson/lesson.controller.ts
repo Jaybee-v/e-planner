@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { CreateLessonDto } from 'src/infrastructures/dtos/create/create-lesson';
 import { LessonRepositoryOrm } from 'src/infrastructures/repositories/lesson.repository';
 import { AuthGuard } from '../../auth/auth.guard';
@@ -17,9 +9,16 @@ export class LessonController {
 
   @UseGuards(AuthGuard)
   @Post('')
-  async create(createLessonDto: CreateLessonDto, @Request() req: any) {
+  async create(@Body() createLessonDto: CreateLessonDto, @Request() req: any) {
     try {
+      console.log(createLessonDto);
+      console.log(req.user.sub);
+
+      console.log(req.user.role);
+
       if (req.user.sub !== createLessonDto.hostId) {
+        console.log('ici error');
+
         return {
           status: 'error',
           code: 401,
@@ -27,7 +26,8 @@ export class LessonController {
         };
       }
 
-      if (req.user.role !== 'stable' || req.user.role !== 'instructor') {
+      if (req.user.role !== 'stable') {
+        console.log('ici error');
         return {
           status: 'error',
           code: 401,

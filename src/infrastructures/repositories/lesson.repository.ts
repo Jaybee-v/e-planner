@@ -4,16 +4,20 @@ import { Lesson } from '../entities/lesson.entity';
 import { Between, Repository } from 'typeorm';
 import { CreateLessonDto } from '../dtos/create/create-lesson';
 import { LessonM, LessonTableM } from 'src/domains/models/Lesson';
-import { HttpException } from '@nestjs/common';
+import { forwardRef, HttpException, Inject } from '@nestjs/common';
 import { endOfWeek, startOfWeek } from 'date-fns';
 import { InstructorRepositoryOrm } from './instructor.repository';
 import { InstructorM } from 'src/domains/models/Instructor';
+import { LessonSubscriptionRepositoryOrm } from './lesson-subscription.repository';
+import { RiderM } from 'src/domains/models/Rider';
 
 export class LessonRepositoryOrm implements LessonRepository {
   constructor(
     @InjectRepository(Lesson)
     private readonly lessonRepository: Repository<Lesson>,
     private readonly instructorService: InstructorRepositoryOrm,
+    @Inject(forwardRef(() => LessonSubscriptionRepositoryOrm))
+    private readonly lessonSubscriptionService: LessonSubscriptionRepositoryOrm,
   ) {}
 
   async create(createLessontDto: CreateLessonDto): Promise<LessonM> {
@@ -51,6 +55,7 @@ export class LessonRepositoryOrm implements LessonRepository {
 
     return lessons.map((lesson) => this.toLessonModel(lesson));
   }
+
   async findByHostIdForTable(
     id: string,
     date: string,
@@ -68,14 +73,38 @@ export class LessonRepositoryOrm implements LessonRepository {
         hostId: id,
         date: Between(startOfWeekDate, endOfWeekDate),
       },
+      // Remove order here, we will sort it manually
     });
+
+    // Function to convert HH:MM to minutes since midnight
+    const convertTimeToMinutes = (time: string): number => {
+      const [hours, minutes] = time.split(':').map(Number);
+      return hours * 60 + minutes;
+    };
+
+    console.log(lessons);
+
+    // Sort lessons by startTime
+    lessons.sort((a, b) => {
+      return (
+        convertTimeToMinutes(a.startTime) - convertTimeToMinutes(b.startTime)
+      );
+    });
+
+    console.log(lessons);
+
     const result: LessonTableM[] = [];
     for await (const lesson of lessons) {
       console.log(lesson);
       const instructor = await this.instructorService.findById(
         lesson.instructorId,
       );
-      result.push(this.toLessonTableModel(lesson, instructor));
+      const participants =
+        await this.lessonSubscriptionService.findSubAndRiderByLessonId(
+          lesson.id,
+        );
+
+      result.push(this.toLessonTableModel(lesson, instructor, participants));
     }
     return result;
   }
@@ -99,6 +128,7 @@ export class LessonRepositoryOrm implements LessonRepository {
   private toLessonTableModel(
     lessonEntity: Lesson,
     instructorEntity: InstructorM,
+    participants: RiderM[],
   ): LessonTableM {
     const lessonModel = new LessonTableM();
 
@@ -109,13 +139,13 @@ export class LessonRepositoryOrm implements LessonRepository {
     lessonModel.date = lessonEntity.date;
     lessonModel.instructorId = lessonEntity.instructorId;
     lessonModel.maxParticipants = lessonEntity.maxParticipants;
-    lessonModel.participants = lessonEntity.participants;
     lessonModel.startTime = lessonEntity.startTime;
     lessonModel.endTime = lessonEntity.endTime;
     lessonModel.levelRequired = lessonEntity.levelRequired;
     lessonModel.createdAt = lessonEntity.createdAt;
     lessonModel.updatedAt = lessonEntity.updatedAt;
     lessonModel.instructor = instructorEntity;
+    lessonModel.participantsIdentity = participants;
 
     return lessonModel;
   }
@@ -146,7 +176,6 @@ export class LessonRepositoryOrm implements LessonRepository {
     lessonModel.date = lessonEntity.date;
     lessonModel.instructorId = lessonEntity.instructorId;
     lessonModel.maxParticipants = lessonEntity.maxParticipants;
-    lessonModel.participants = lessonEntity.participants;
     lessonModel.startTime = lessonEntity.startTime;
     lessonModel.endTime = lessonEntity.endTime;
     lessonModel.levelRequired = lessonEntity.levelRequired;

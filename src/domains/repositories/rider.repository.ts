@@ -3,5 +3,6 @@ import { RiderM } from '../models/Rider';
 
 export interface RiderRepository {
   create(createRiderDto: CreateRiderDto): Promise<RiderM>;
-  findById(id: string, req: any): Promise<RiderM>;
+  findById(id: string): Promise<RiderM | null>;
+  findByIdHimself(id: string, req: any): Promise<RiderM>;
 }

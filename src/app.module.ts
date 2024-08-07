@@ -18,6 +18,7 @@ import { EmailModule } from './applications/email/email.module';
     AuthModule,
     StableModule,
     EmailModule,
+
     // CacheModule.register(),
   ],
 })
