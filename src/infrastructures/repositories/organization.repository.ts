@@ -110,6 +110,38 @@ export class OrganizationRepositoryOrm implements OrganizationRepository {
     return { riders: riders, waitingList: waitingList };
   }
 
+  async stableActionOnRider(
+    value: number,
+    stableID: string,
+    riderID: string,
+  ): Promise<void> {
+    const organization = await this.organizationRepository.findOne({
+      where: {
+        stableId: stableID,
+        riderId: riderID,
+      },
+    });
+
+    if (!organization) {
+      throw new HttpException(
+        {
+          status: 'error',
+          code: 404,
+          error: 'Vous ne pouvez pas effectuer cette action.',
+        },
+        404,
+      );
+    }
+    if (value === 1) {
+      organization.status = value;
+      await this.organizationRepository.save(organization);
+      return;
+    } else {
+      await this.organizationRepository.remove(organization);
+      return;
+    }
+  }
+
   private toOrganizationEntity(
     createOrganizationDto: CreateOrganizationDto,
   ): Organization {

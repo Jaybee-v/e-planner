@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -72,6 +73,32 @@ export class OrganizationController {
         status: 'success',
         message: 'Organizations found',
         data: result,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        status: 'error',
+        code: error.code,
+        message: error.response ? error.response.error : error.message,
+      };
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('action-on-rider')
+  async stableActionOnRider(
+    @Body() body: { stableId: string; riderId: string; value: number },
+  ) {
+    try {
+      await this.organizationService.stableActionOnRider(
+        body.value,
+        body.stableId,
+        body.riderId,
+      );
+      return {
+        status: 'success',
+        code: 200,
+        message: "Vous venez d'accepter le cavalier.",
       };
     } catch (error) {
       console.log(error);

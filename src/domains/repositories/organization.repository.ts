@@ -13,4 +13,9 @@ export interface OrganizationRepository {
     riders: RiderForganizationM[];
     waitingList: RiderForganizationM[];
   }>;
+  stableActionOnRider(
+    value: number,
+    stableID: string,
+    riderID: string,
+  ): Promise<void>;
 }
