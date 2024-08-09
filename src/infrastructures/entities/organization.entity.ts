@@ -11,6 +11,9 @@ export class Organization {
   @Column('varchar')
   stableId: string;
 
+  @Column({ default: 0 })
+  status: number;
+
   @Column({ default: () => 'NOW()' })
   createdAt: Date;
 

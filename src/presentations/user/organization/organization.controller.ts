@@ -62,4 +62,24 @@ export class OrganizationController {
       };
     }
   }
+
+  @UseGuards(AuthGuard)
+  @Get('by-stable/:stableId')
+  async findByStableId(@Param('stableId') stableId: string) {
+    try {
+      const result = await this.organizationService.findByStableId(stableId);
+      return {
+        status: 'success',
+        message: 'Organizations found',
+        data: result,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        status: 'error',
+        code: error.code,
+        message: error.response ? error.response.error : error.message,
+      };
+    }
+  }
 }

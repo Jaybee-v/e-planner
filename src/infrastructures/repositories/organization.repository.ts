@@ -4,10 +4,11 @@ import { Organization } from '../entities/organization.entity';
 import { Repository } from 'typeorm';
 import { CreateOrganizationDto } from '../dtos/create/create-organization.dto';
 import { OrganizationM } from 'src/domains/models/Organization';
+import { RiderAndStableM } from 'src/domains/models/Stable';
 import { StableRepositoryOrm } from './stable.repository';
 import { forwardRef, HttpException, Inject } from '@nestjs/common';
 import { RiderRepositoryOrm } from './rider.repository';
-import { StableM } from 'src/domains/models/Stable';
+import { RiderForganizationM } from 'src/domains/models/Rider';
 
 export class OrganizationRepositoryOrm implements OrganizationRepository {
   constructor(
@@ -57,7 +58,7 @@ export class OrganizationRepositoryOrm implements OrganizationRepository {
     return this.toOrganizationModel(saved);
   }
 
-  async findByRiderId(riderId: string): Promise<StableM[]> {
+  async findByRiderId(riderId: string): Promise<RiderAndStableM[]> {
     const organizations = await this.organizationRepository.find({
       where: {
         riderId,
@@ -65,15 +66,48 @@ export class OrganizationRepositoryOrm implements OrganizationRepository {
     });
     console.log(organizations);
 
-    const organizationsWithStable: StableM[] = [];
+    const organizationsWithStable: RiderAndStableM[] = [];
 
     for await (const organization of organizations) {
       const id = organization.stableId;
       const stable = await this.stableService.findById(id);
-      organizationsWithStable.push(stable);
+      const data: RiderAndStableM = {
+        ...stable,
+        status: organization.status,
+      };
+      organizationsWithStable.push(data);
     }
 
     return organizationsWithStable;
+  }
+
+  async findByStableId(stableId: string): Promise<{
+    riders: RiderForganizationM[];
+    waitingList: RiderForganizationM[];
+  }> {
+    const organizations = await this.organizationRepository.find({
+      where: {
+        stableId,
+      },
+    });
+
+    const riders: RiderForganizationM[] = [];
+    const waitingList: RiderForganizationM[] = [];
+    for await (const organization of organizations) {
+      const rider = await this.riderService.findById(organization.riderId);
+      if (rider) {
+        const data: RiderForganizationM = {
+          ...rider,
+          status: organization.status,
+        };
+        if (organization.status === 0) {
+          waitingList.push(data);
+        } else {
+          riders.push(data);
+        }
+      }
+    }
+    return { riders: riders, waitingList: waitingList };
   }
 
   private toOrganizationEntity(

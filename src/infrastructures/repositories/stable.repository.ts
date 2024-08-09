@@ -42,6 +42,11 @@ export class StableRepositoryOrm implements StableRepository {
     return this.toStableModel(stable);
   }
 
+  async findByZipcode(zipcode: string): Promise<StableM[]> {
+    const stables = await this.stableRepository.find({ where: { zipcode } });
+    return stables.map((stable) => this.toStableModel(stable));
+  }
+
   private toStableEntity(createStableDto: CreateStableDto): Stable {
     const stableEntity = new Stable();
 

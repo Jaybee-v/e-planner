@@ -68,6 +68,25 @@ export class StableController {
       };
     }
   }
+  @Get('registered/:zipcode')
+  async getStableByZipCode(@Param('zipcode') zipcode: string) {
+    try {
+      const stables = await this.stableService.findByZipcode(zipcode);
+      return {
+        status: 'success',
+        code: 200,
+        message: 'Stables retrieved successfully',
+        data: stables,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        status: 'error',
+        code: error.code,
+        message: 'Internal server error',
+      };
+    }
+  }
 
   @Get(':id')
   async getStable(@Param('id') id: string) {
